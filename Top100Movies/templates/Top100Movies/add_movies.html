@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+ <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+ <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+ <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script src="https://unpkg.com/react-beautiful-dnd@13.1.0/dist/react-beautiful-dnd.js"></script>
+  <script src="https://unpkg.com/react-beautiful-dnd@13.1.0/dist/react-beautiful-dnd.min.js"></script>
+<!--  <script type="module" src="{% static 'Top100Movies/movie_list.js' %}?version=7"></script>-->
+ 
+  <title>MyTop100Movies</title>
+  </head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+	<div class="container-fluid">
+		<span class="navbar-text">MyTop100Movies</span>
+	</div>
+</nav>
+ 
+
+<div class="container dark-nav" id="theUniverse"> 
+<div class="row">
+	<div class="col-md-2"> 
+	  	<div id="iB"> 
+			<div class="d-flex justify-content-center"> 
+				<div class="d-inline-flex ">
+					<img class="align-self-start" id="imdbImage" src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" alt="uh oh" height="100px" width="100px">
+	 				<span class="align-self-center" id="top250">Popular movies</span>
+	 			</div>
+	 		</div>
+	  	</div>
+	</div>
+	<div class="col-md-auto">
+		<div id="iB">
+  			<div class="vr"></div>
+		</div>
+	</div>
+	<div class="col-md-5">
+  		<div id="iB"> 
+			<div class="d-flex justify-content-center"> 
+				<div class="p-2" id="root"></div>
+			</div>
+ 		</div>
+ 	</div>
+ </div>
+ 	 
+<div class="row">
+	<div class="col-md-2"> 
+ 		<div id="iB"> 
+ 			<div class="d-flex justify-content-center"> 
+ 				<div id="top250"> My Top 100 Movies </div>
+   			</div>
+		</div>
+	</div>
+	<div class="col-md-auto">
+		<div id="iB">
+  			<div class="vr"></div>
+		</div>
+	</div>
+</div>
+</div>
+<script type="text/babel">
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+const css = `
+	#imdbContainer{
+	overflow:auto;
+	border-style: outset;
+	width: 500px;
+	border-radius: 10px;
+	background-color:black;
+}
+
+`
+ 
+class MovieList extends React.Component {
+	
+  state = {
+    movies: []
+  }
+
+ 
+
+  componentDidMount() {
+    axios.get('/api/Top100Movies')
+      .then(res => {
+        const movies = res.data;
+        this.setState({ movies });
+      })
+  }
+
+  render() {
+    return (
+      <DragDropContext>
+       	<div class="d-inline-flex p-2" id="imdbContainer"><style>{css}</style>
+          {this.state.movies
+            .map(movie =>
+              <div key={movie.id}> <img src={movie.thumbnail} alt="uh oh" height="150px" width="150px"/></div>
+            )}
+          </div>
+       </DragDropContext>
+     
+    );
+  }
+}
+
+ 
+ 
+const rootElement = document.getElementById("root");
+ReactDOM.render(<MovieList />, rootElement);
+
+</script> 
+</body>
+ 
+<style>
+.vr {
+  border-left: 6px solid ;
+  height: 100px;
+}
+#iB{display:inline-block;
+
+}
+ 
+#top250{
+ 	
+	display:inline-block;
+	font-size: 20px;
+	font-family: Lato, sans serif;
+	color: white;
+	border-color: white;
+ 	border-style: 2px solid;
+	padding-left: 20px;
+	padding-right: 20px;
+	 
+ 
+}
+#imdbContainer{
+	 
+	overflow:auto;
+	border-style: outset;
+	width: 500px;
+	border-radius: 10px;
+	 
+}
+#imdbImage{
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 40px;
+	
+}
+
+.dark-nav {
+  background-color: #222;
+  height: 50vh;
+  width: 100%;
+  border-radius: 10px;
+}
+</style>
+</html>

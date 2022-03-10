@@ -1,0 +1,14 @@
+
+ 
+.animate__animated.animate__zoomOut {
+  --animate-duration: 3s;
+} 
+
+.animate__animated.animate__backInLeft {
+  --animate-duration: 3s;
+} 
+
+ 
+.animate__animated.animate__fadeIn {
+  --animate-duration: 5s;
+} 
